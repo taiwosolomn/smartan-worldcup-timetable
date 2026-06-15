@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smartan House — World Cup 2026 Timetable</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+:root {
+  --bg:#080808; --s1:#111; --s2:#181818; --border:#1f1f1f;
+  --green:#00e676; --green-d:#007a40; --white:#efefef; --grey:#666; --grey2:#444;
+  --gold:#ffca28; --purple:#ce93d8; --blue:#82b1ff; --red:#ff6e6e;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--white);font-family:'Space Grotesk',system-ui,sans-serif;min-height:100vh}
+.header{padding:24px 28px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px}
+.eyebrow{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+h1{font-size:20px;font-weight:700;line-height:1.15}
+.sub{font-family:'Space Mono',monospace;font-size:10px;color:var(--grey);margin-top:5px}
+.stats{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.stat-num{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--green);line-height:1}
+.stat-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--grey);margin-top:2px}
+.controls{padding:12px 28px;border-bottom:1px solid var(--border);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ctrl-lbl{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--grey2);margin-right:4px}
+.fbtn{background:var(--s1);border:1px solid var(--border);color:var(--grey);font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:500;padding:4px 11px;border-radius:3px;cursor:pointer;transition:all .12s;white-space:nowrap}
+.fbtn:hover{border-color:var(--green-d);color:var(--white)}
+.fbtn.on{background:var(--green);border-color:var(--green);color:#000;font-weight:700}
+.wrap{overflow-x:auto;padding:0 28px 40px}
+table{width:100%;border-collapse:collapse;min-width:680px}
+thead th{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--grey);padding:13px 10px 10px;text-align:left;border-bottom:1px solid var(--green-d);position:sticky;top:0;background:var(--bg);z-index:5}
+thead th:first-child{width:68px}
+thead th:nth-child(2){width:108px}
+tbody tr{border-bottom:1px solid var(--border);transition:background .08s}
+tbody tr:hover{background:#111}
+tbody tr.hide{display:none}
+tbody tr:nth-child(even){background:var(--s1)}
+tbody tr:nth-child(even):hover{background:#131313}
+td{padding:8px 10px;vertical-align:middle}
+.day-cell{font-family:'Space Mono',monospace;font-size:10px;color:var(--grey2);font-weight:700}
+.date-cell{font-weight:600;font-size:12.5px;white-space:nowrap}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:3px;font-size:12px;font-weight:600;white-space:nowrap;transition:opacity .15s}
+.pill-n{font-family:'Space Mono',monospace;font-size:8px;opacity:.55}
+.p1{background:#0d1f0d;color:var(--green);border:1px solid #1a3a1a}
+.p2{background:#0d1520;color:var(--blue);border:1px solid #1a2a40}
+.p3{background:#1f0d0d;color:var(--red);border:1px solid #3a1a1a}
+.p4{background:#1f1800;color:var(--gold);border:1px solid #3a2f00}
+.p5{background:#1a0d1f;color:var(--purple);border:1px solid #33195c}
+tr.row-d1{background:#100e00!important}
+tr.row-today{background:#081608!important}
+.badge{font-family:'Space Mono',monospace;font-size:7px;font-weight:700;padding:1px 4px;border-radius:2px;letter-spacing:.08em;margin-left:5px;vertical-align:middle}
+.badge-today{background:var(--green);color:#000}
+.badge-five{background:#1a0d1f;color:var(--purple);border:1px solid #33195c}
+.empty{color:var(--grey2);font-family:'Space Mono',monospace;font-size:10px}
+.footer{padding:20px 28px 32px;border-top:1px solid var(--border)}
+.footer-title{font-family:'Space Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--green);margin-bottom:14px}
+.roster{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:5px 24px}
+.r-item{display:flex;align-items:center;gap:7px;font-size:12px;font-family:'Space Mono',monospace}
+.r-n{color:var(--grey2);font-size:10px}
+.r-name{color:var(--white);flex:1}
+.r-count{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:1px 7px;font-size:9px;color:var(--green);font-weight:700}
+.footer-note{margin-top:14px;font-family:'Space Mono',monospace;font-size:9px;color:var(--grey2);line-height:1.7}
+@media(max-width:600px){.header,.controls,.wrap,.footer{padding-left:14px;padding-right:14px}h1{font-size:16px}.stats{gap:12px}.stat-num{font-size:22px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="eyebrow">Smartan House · World Cup Squad 2026</div>
+    <h1>Posting Timetable</h1>
+    <div class="sub">Jun 14 – Jul 20, 2026 &nbsp;·&nbsp; 37 days &nbsp;·&nbsp; 17 creators &nbsp;·&nbsp; 9 videos each</div>
+  </div>
+  <div class="stats">
+    <div><div class="stat-num">153</div><div class="stat-lbl">Total Videos</div></div>
+    <div><div class="stat-num">37</div><div class="stat-lbl">Days</div></div>
+    <div><div class="stat-num">9×</div><div class="stat-lbl">Per Creator</div></div>
+  </div>
+</div>
+
+<div class="controls">
+  <span class="ctrl-lbl">Filter:</span>
+  <button class="fbtn on" onclick="filter('ALL')">All</button>
+  <button class="fbtn" onclick="filter('Solomon')">Solomon</button>
+  <button class="fbtn" onclick="filter('MIA')">MIA</button>
+  <button class="fbtn" onclick="filter('Fortune')">Fortune</button>
+  <button class="fbtn" onclick="filter('Cosmos')">Cosmos</button>
+  <button class="fbtn" onclick="filter('Stephanie')">Stephanie</button>
+  <button class="fbtn" onclick="filter('Onimisi David')">Onimisi David</button>
+  <button class="fbtn" onclick="filter('Eddie')">Eddie</button>
+  <button class="fbtn" onclick="filter('Jeff Johnson')">Jeff Johnson</button>
+  <button class="fbtn" onclick="filter('Ife Abere')">Ife Abere</button>
+  <button class="fbtn" onclick="filter('Tedd')">Tedd</button>
+  <button class="fbtn" onclick="filter('Deborah')">Deborah</button>
+  <button class="fbtn" onclick="filter('Nuel')">Nuel</button>
+  <button class="fbtn" onclick="filter('Deejay')">Deejay</button>
+  <button class="fbtn" onclick="filter('Fife')">Fife</button>
+  <button class="fbtn" onclick="filter('Omole')">Omole</button>
+  <button class="fbtn" onclick="filter('Samuel')">Samuel</button>
+  <button class="fbtn" onclick="filter('Isaac')">Isaac</button>
+</div>
+
+<div class="wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Day</th><th>Date</th><th>Slot 1</th><th>Slot 2</th><th>Slot 3</th><th>Slot 4</th><th>Slot 5</th>
+    </tr>
+  </thead>
+  <tbody id="tb"></tbody>
+</table>
+</div>
+
+<div class="footer">
+  <div class="footer-title">Full Roster — Everyone posts exactly 9 videos</div>
+  <div class="roster" id="roster"></div>
+  <div class="footer-note">
+    ★ Priority: 4 slots/day &nbsp;·&nbsp; Bonus 5th slot on select days &nbsp;·&nbsp; Gap between each creator's appearances: 4–5 days<br>
+    Day 01 = Jun 14 · Tedd only (already posted, other slots left blank) &nbsp;·&nbsp; Day 02 = Jun 15 · Today (5 fixed slots)
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────
+// SCHEDULE — edit slots arrays here to update the live site
+// Format: ["dayNum", "Date string", "YYYY-MM-DD", ["Slot1","Slot2",...], "rowType"]
+// rowType options: "d1" (day1), "five" (5-slot bonus day), "" (normal)
+// TODAY badge is applied automatically based on the viewer's current date
+// ─────────────────────────────────────────────────────
+
+// Get today's date in Lagos time (WAT = UTC+1)
+const nowWAT = new Date(Date.now() + 60*60*1000); // shift to UTC+1
+const todayStr = nowWAT.toISOString().slice(0,10); // "YYYY-MM-DD"
+
+const S = [
+  ["01","Sun Jun 14","2026-06-14",  ["Tedd"],                                                "d1"],
+  ["02","Mon Jun 15","2026-06-15",  ["Deejay","Solomon","Samuel","MIA","Stephanie"],          ""],
+  ["03","Tue Jun 16","2026-06-16",  ["Fortune","Cosmos","Onimisi David","Eddie"],             ""],
+  ["04","Wed Jun 17","2026-06-17",  ["Jeff Johnson","Ife Abere","Deborah","Nuel"],            ""],
+  ["05","Thu Jun 18","2026-06-18",  ["Fife","Omole","Isaac","Tedd"],                          ""],
+  ["06","Fri Jun 19","2026-06-19",  ["Solomon","MIA","Stephanie","Deejay"],                   ""],
+  ["07","Sat Jun 20","2026-06-20",  ["Samuel","Fortune","Cosmos","Onimisi David","Eddie"],    "five"],
+  ["08","Sun Jun 21","2026-06-21",  ["Jeff Johnson","Ife Abere","Deborah","Nuel"],            ""],
+  ["09","Mon Jun 22","2026-06-22",  ["Fife","Omole","Isaac","Tedd"],                          ""],
+  ["10","Tue Jun 23","2026-06-23",  ["Solomon","MIA","Stephanie","Deejay"],                   ""],
+  ["11","Wed Jun 24","2026-06-24",  ["Fortune","Cosmos","Onimisi David","Eddie"],             ""],
+  ["12","Thu Jun 25","2026-06-25",  ["Samuel","Jeff Johnson","Ife Abere","Deborah","Nuel"],   "five"],
+  ["13","Fri Jun 26","2026-06-26",  ["Fife","Omole","Isaac","Tedd"],                          ""],
+  ["14","Sat Jun 27","2026-06-27",  ["Solomon","MIA","Stephanie","Deejay"],                   ""],
+  ["15","Sun Jun 28","2026-06-28",  ["Fortune","Cosmos","Onimisi David","Eddie"],             ""],
+  ["16","Mon Jun 29","2026-06-29",  ["Jeff Johnson","Ife Abere","Deborah","Nuel"],            ""],
+  ["17","Tue Jun 30","2026-06-30",  ["Samuel","Fife","Omole","Isaac","Tedd"],                 "five"],
+  ["18","Wed Jul 01","2026-07-01",  ["Solomon","MIA","Stephanie","Deejay"],                   ""],
+  ["19","Thu Jul 02","2026-07-02",  ["Fortune","Cosmos","Onimisi David","Eddie"],             ""],
+  ["20","Fri Jul 03","2026-07-03",  ["Jeff Johnson","Ife Abere","Deborah","Nuel"],            ""],
+  ["21","Sat Jul 04","2026-07-04",  ["Fife","Omole","Samuel","Isaac"],                        ""],
+  ["22","Sun Jul 05","2026-07-05",  ["Tedd","Solomon","MIA","Stephanie","Deejay"],            "five"],
+  ["23","Mon Jul 06","2026-07-06",  ["Fortune","Cosmos","Onimisi David","Eddie"],             ""],
+  ["24","Tue Jul 07","2026-07-07",  ["Jeff Johnson","Ife Abere","Deborah","Nuel"],            ""],
+  ["25","Wed Jul 08","2026-07-08",  ["Fife","Omole","Samuel","Isaac"],                        ""],
+  ["26","Thu Jul 09","2026-07-09",  ["Solomon","MIA","Stephanie","Tedd"],                     ""],
+  ["27","Fri Jul 10","2026-07-10",  ["Deejay","Fortune","Cosmos","Onimisi David","Eddie"],    "five"],
+  ["28","Sat Jul 11","2026-07-11",  ["Jeff Johnson","Ife Abere","Deborah","Nuel"],            ""],
+  ["29","Sun Jul 12","2026-07-12",  ["Fife","Omole","Samuel","Isaac"],                        ""],
+  ["30","Mon Jul 13","2026-07-13",  ["Solomon","MIA","Stephanie","Tedd"],                     ""],
+  ["31","Tue Jul 14","2026-07-14",  ["Fortune","Cosmos","Onimisi David","Eddie"],             ""],
+  ["32","Wed Jul 15","2026-07-15",  ["Deejay","Jeff Johnson","Ife Abere","Deborah","Nuel"],   "five"],
+  ["33","Thu Jul 16","2026-07-16",  ["Fife","Omole","Samuel","Isaac"],                        ""],
+  ["34","Fri Jul 17","2026-07-17",  ["Solomon","MIA","Stephanie","Tedd"],                     ""],
+  ["35","Sat Jul 18","2026-07-18",  ["Fortune","Cosmos","Onimisi David","Eddie"],             ""],
+  ["36","Sun Jul 19","2026-07-19",  ["Jeff Johnson","Ife Abere","Deborah","Nuel"],            ""],
+  ["37","Mon Jul 20","2026-07-20",  ["Deejay","Fife","Omole","Samuel","Isaac"],               "five"],
+];
+
+const PEOPLE = ["Solomon","MIA","Fortune","Cosmos","Stephanie","Onimisi David",
+  "Eddie","Jeff Johnson","Ife Abere","Tedd","Deborah","Nuel",
+  "Deejay","Fife","Omole","Samuel","Isaac"];
+const PCLS = ["p1","p2","p3","p4","p5"];
+
+// Build table
+const tb = document.getElementById('tb');
+S.forEach(([dnum,dstr,isoDate,slots,rtype]) => {
+  const tr = document.createElement('tr');
+  tr.dataset.slots = slots.join('|');
+  if (rtype) tr.classList.add('row-'+rtype);
+  const isToday = isoDate === todayStr;
+  if (isToday) tr.classList.add('row-today');
+  const isFive = slots.length === 5;
+  const todayB = isToday ? '<span class="badge badge-today">TODAY</span>' : '';
+  const fiveB  = isFive  ? '<span class="badge badge-five">+5</span>'     : '';
+  let html = `<td class="day-cell">D${dnum}</td><td class="date-cell">${dstr}${todayB}${fiveB}</td>`;
+  for (let si=0; si<5; si++) {
+    if (si < slots.length) {
+      const cls = rtype==='d1' && si===0 ? 'p4' : PCLS[si];
+      html += `<td><span class="pill ${cls}"><span class="pill-n">#${si+1}</span>${slots[si]}</span></td>`;
+    } else {
+      html += `<td><span class="empty">—</span></td>`;
+    }
+  }
+  tr.innerHTML = html;
+  tb.appendChild(tr);
+});
+
+// Roster
+const counts = {};
+PEOPLE.forEach(p => counts[p]=0);
+S.forEach(([,,slots]) => slots.forEach(p => counts[p]++));
+const roster = document.getElementById('roster');
+PEOPLE.forEach((p,i) => {
+  const el = document.createElement('div');
+  el.className = 'r-item';
+  el.innerHTML = `<span class="r-n">${String(i+1).padStart(2,'0')}.</span><span class="r-name">${p}</span><span class="r-count">${counts[p]}×</span>`;
+  roster.appendChild(el);
+});
+
+// Filter
+function filter(name) {
+  document.querySelectorAll('.fbtn').forEach(b => {
+    b.classList.toggle('on', b.textContent===name||(name==='ALL'&&b.textContent==='All'));
+  });
+  document.querySelectorAll('#tb tr').forEach(tr => {
+    const slots = tr.dataset.slots ? tr.dataset.slots.split('|') : [];
+    if (name==='ALL') {
+      tr.classList.remove('hide');
+      tr.querySelectorAll('.pill').forEach(p => p.style.opacity='1');
+    } else if (slots.includes(name)) {
+      tr.classList.remove('hide');
+      tr.querySelectorAll('.pill').forEach(p => {
+        const n = p.textContent.replace(/^#\d/,'').trim();
+        p.style.opacity = n===name ? '1' : '0.12';
+      });
+    } else {
+      tr.classList.add('hide');
+    }
+  });
+}
+</script>
+</body>
+</html>
